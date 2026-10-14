@@ -4,11 +4,8 @@ from flask import Flask, request, jsonify
 from ibm_watsonx_ai.foundation_models import Model
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 
-import os
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))
-    app.run(host='0.0.0.0', port=port)
-    
+app = Flask(__name__)
+
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN", "turisztikaichatbot2026")
 PAGE_ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN", "IDE_JÖN_A_META_PAGE_ACCESS_TOKEN")
 WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "IDE_JÖN_AZ_IBM_API_KEY")
@@ -51,9 +48,7 @@ def handle_messages():
                 message_text = messaging_event.get("message", {}).get("text")
 
                 if sender_id and message_text:
-                    # Válasz generálása watsonx.ai-val
                     bot_response = generate_watsonx_response(message_text)
-                    # Válasz visszaküldése a Messengernek
                     send_messenger_message(sender_id, bot_response)
 
     return "EVENT_RECEIVED", 200
@@ -77,4 +72,5 @@ def send_messenger_message(recipient_id, text):
     requests.post(url, json=payload, headers=headers)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)

@@ -4,8 +4,11 @@ from flask import Flask, request, jsonify
 from ibm_watsonx_ai.foundation_models import Model
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 
-app = Flask(__name__)
-
+import os
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port)
+    
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN", "turisztikaichatbot2026")
 PAGE_ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN", "IDE_JÖN_A_META_PAGE_ACCESS_TOKEN")
 WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "IDE_JÖN_AZ_IBM_API_KEY")
